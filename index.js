@@ -1,0 +1,23 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const body_parser_1 = __importDefault(require("body-parser"));
+const express_1 = __importDefault(require("express"));
+const post_route_1 = __importDefault(require("./routes/post.route"));
+const user_route_1 = __importDefault(require("./routes/user.route"));
+const cors_1 = __importDefault(require("cors"));
+const { socketConnection } = require("./utils/socket-io");
+var socketIO = require("socket.io");
+var http = require("http");
+const app = (0, express_1.default)();
+const server = http.Server(app);
+server.listen(9998);
+socketConnection(server);
+app.use(body_parser_1.default.json());
+app.use((0, cors_1.default)());
+app.use("/posts", post_route_1.default);
+app.use("/users", user_route_1.default);
+// module.exports = app;
+app.listen(9999, () => { });
